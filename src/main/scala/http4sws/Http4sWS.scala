@@ -50,7 +50,6 @@ object Http4sWS extends StreamApp[IO] {
   // run the drip to start publishing
   drip.compile.drain.unsafeRunAsync(println(_))
 
-
   private def subscribeClientToDrip: Stream[IO, WebSocketFrame] =
     topic.subscribe(10).map(Text(_))
 

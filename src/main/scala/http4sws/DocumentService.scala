@@ -56,7 +56,6 @@ class DocumentService[F[_]](documentStore: DocumentStore[F])(implicit F: Effect[
         part.headers.get(`Content-Type`) match {
           case None ⇒ BadRequest(s"No content type")
           case Some(ct) ⇒
-            val id = UUID.randomUUID().toString
             content.flatMap(contents ⇒ store(id, contents, ct, part.filename))
         }
     }

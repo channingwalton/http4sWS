@@ -20,20 +20,29 @@ import cats.effect.IO
 import fs2.{ Stream, StreamApp }
 import org.http4s.HttpService
 import org.http4s.server.blaze.BlazeBuilder
+import org.http4s.server.staticcontent.{ MemoryCache, ResourceService, resourceService }
+
 import scala.concurrent.ExecutionContext.Implicits.global
 
 object Main extends StreamApp[IO] {
 
-  val someProcessor: SomeProcessor = new SomeProcessor()
-  val service: HttpService[IO]     = new Http4sWS(someProcessor).service
+  val batchJobs: BatchJobs      = new BatchJobs()
+  val webSocketService: HttpService[IO] = new Http4sWS(batchJobs).service
 
   def server: Stream[IO, StreamApp.ExitCode] =
     for {
       exitCode <- BlazeBuilder[IO]
         .bindHttp(8080, "0.0.0.0")
-        .mountService(service, "/")
+        .mountService(webSocketService, "/")
+        .mountService(staticFiles)
         .serve
     } yield exitCode
+
+  private def staticFiles: HttpService[IO] =
+    resourceService(
+      ResourceService
+        .Config[IO](basePath = "/public", pathPrefix = "/", cacheStrategy = MemoryCache())
+    )
 
   override def stream(args: List[String],
                       requestShutdown: IO[Unit]): Stream[IO, StreamApp.ExitCode] =

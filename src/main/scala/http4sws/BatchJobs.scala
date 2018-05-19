@@ -25,7 +25,7 @@ import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 // something that does heavy work and tells subscribers about it
-class SomeProcessor {
+class BatchJobs {
 
   private val scheduler: Scheduler =
     fs2.Scheduler.fromScheduledExecutorService(new ScheduledThreadPoolExecutor(1))

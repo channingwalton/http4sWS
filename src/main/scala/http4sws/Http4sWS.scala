@@ -23,10 +23,10 @@ import org.http4s.dsl.io._
 import org.http4s.server.websocket._
 import org.http4s.websocket.WebsocketBits._
 
-class Http4sWS(someProcessor: SomeProcessor) {
+class Http4sWS(batchJobs: BatchJobs) {
 
   private def subscribeClientToDrip: Stream[IO, WebSocketFrame] =
-    someProcessor.topic.subscribe(10).map(Text(_))
+    batchJobs.topic.subscribe(10).map(Text(_))
 
   def clientStream: Stream[IO, WebSocketFrame] =
     // Just say Hello the client but here you can do more complex things

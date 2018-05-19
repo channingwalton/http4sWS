@@ -2,4 +2,4 @@
 dir="$( cd "$( dirname "$0" )" && pwd )"
 cd ${dir}/..
 
-sbt clean compile "runMain http4sws.Main"
+sbt compile "runMain http4sws.Main"

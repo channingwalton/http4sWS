@@ -19,7 +19,7 @@ You can test this with curl (assuming a document called _picture.jpg_):
 ## Websockets
 The easiest way to play is to run http4sws.Http4sWS and use Chrome's Simple Websocket Client using the
 url ws://localhost:8080/ws, and click _Open_. Type anything into the request field, the server will print it.
-The message log will display the current time every second.
+The server will send updates from a fictional batch process periodically.
 
 ## Contribution policy ##
 

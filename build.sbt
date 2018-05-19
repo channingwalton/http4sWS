@@ -30,7 +30,8 @@ lazy val http4sws =
         library.circeGenericExtras,
         library.circeParser,
         library.scalaTest,
-        library.doobieScalaTest
+        library.doobieScalaTest,
+        library.jaxb
       )
     )
 
@@ -50,6 +51,7 @@ lazy val library =
       val logback = "1.2.3"
       val log4s = "1.6.1"
       val scalaTest = "3.0.5"
+      val jaxbapi = "2.2.11"
     }
     val http4s                    = "org.http4s"              %% "http4s-dsl"           % Version.http4s
     val http4sServer              = "org.http4s"              %% "http4s-blaze-server"  % Version.http4s
@@ -71,6 +73,7 @@ lazy val library =
     val circeGenericExtras        = "io.circe"                %% "circe-generic-extras" % Version.circe
     val circeParser               = "io.circe"                %% "circe-parser"         % Version.circe
     val log4s                     = "org.log4s"               %% "log4s"                % Version.log4s
+    val jaxb                      = "javax.xml.bind"           % "jaxb-api"             % Version.jaxbapi
     val scalaTest                 = "org.scalatest"           %% "scalatest"            % Version.scalaTest % Test
   }
 

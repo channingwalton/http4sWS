@@ -16,12 +16,16 @@
 
 package http4sws
 
+import cats.data.OptionT
 import cats.instances.string.catsKernelStdMonoidForString
 import cats.effect.IO
+import cats.instances.list._
+import cats.syntax.traverse._
 import org.http4s.{Method, Request, Response, Uri}
-import org.scalatest.{Assertion, EitherValues, FreeSpec, MustMatchers}
+import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
 import io.circe.syntax._
 import io.circe.parser._
+import org.http4s.headers.`Content-Type`
 
 class DocumentServiceTest extends FreeSpec with MustMatchers with EitherValues {
   private val store =
@@ -31,22 +35,41 @@ class DocumentServiceTest extends FreeSpec with MustMatchers with EitherValues {
   "CRUD" in {
     assertDocumentSummaries(Nil)
 
-    val document = Document("123", "a/b", "doc".getBytes, Some("myFile.doc"))
-    store.put(document).unsafeRunSync()
+    val documents = List(Document("123", "a/b", "doc".getBytes, Some("myFile.doc")),
+                         Document("321", "c/d", "another doc".getBytes, Some("important.doc")))
+    val summaries = documents.map(_.summary)
 
-    assertDocumentSummaries(
-      List[DocumentSummary](DocumentSummary("123", "a/b", Some("myFile.doc")))
-    )
+    documents.map(store.put).sequence.unsafeRunSync()
+
+    assertDocumentSummaries(summaries)
+
+    documents.map { doc ⇒
+      mkGet(s"/document/${doc.id}")
+        .map { response ⇒
+          assertContentType(response, doc.mimeType)
+          getBodyText(response) mustEqual new String(doc.documentData)
+        }
+        .value
+        .unsafeRunSync()
+    }
   }
 
+  private def assertContentType(response: Response[IO], mimeType: String): Unit =
+    response.headers.get(`Content-Type`).map(_.mediaType.renderString) mustBe Some(
+      mimeType
+    )
+
   private def assertDocumentSummaries(expected: List[DocumentSummary]): Unit =
-    service(Request[IO](Method.GET, Uri.unsafeFromString(s"/documents")))
+    mkGet("/documents")
       .map { response ⇒
         val json = getBodyText(response)
         parse(json).right.value mustEqual expected.asJson
       }
       .value
       .unsafeRunSync()
+
+  private def mkGet(path: String): OptionT[IO, Response[IO]] =
+    service(Request[IO](Method.GET, Uri.unsafeFromString(path)))
 
   private def getBodyText(response: Response[IO]): String =
     response.bodyAsText.compile.foldMonoid.unsafeRunSync()

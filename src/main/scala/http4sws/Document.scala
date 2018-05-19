@@ -27,4 +27,6 @@ case class Document(id: String,
   }
 
   override def hashCode: Int = id.hashCode
+
+  def summary: DocumentSummary = DocumentSummary(id, mimeType, fileName)
 }

@@ -22,7 +22,6 @@ import fs2.{ Stream, StreamApp }
 import org.http4s.HttpService
 import org.http4s.server.blaze.BlazeBuilder
 import org.http4s.server.staticcontent.{ MemoryCache, ResourceService, resourceService }
-import org.log4s.Logger
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -34,9 +33,6 @@ object Main extends StreamApp[IO] {
   private val documentStore: DocumentStore[IO]  = new DocumentStore[IO](transactor)
   private val documentService                   = new DocumentService[IO](documentStore).service
   private val webSocketService: HttpService[IO] = new Http4sWS(batchJobs).service
-  @transient private val logger: Logger         = org.log4s.getLogger
-
-  logger.error(s"Server starting")
 
   def server: Stream[IO, StreamApp.ExitCode] =
     for {

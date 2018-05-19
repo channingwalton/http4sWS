@@ -18,8 +18,8 @@ package http4sws
 
 import cats.instances.string.catsKernelStdMonoidForString
 import cats.effect.IO
-import org.http4s.{ Method, Request, Uri }
-import org.scalatest.{ Assertion, EitherValues, FreeSpec, MustMatchers }
+import org.http4s.{Method, Request, Response, Uri}
+import org.scalatest.{Assertion, EitherValues, FreeSpec, MustMatchers}
 import io.circe.syntax._
 import io.circe.parser._
 
@@ -42,9 +42,12 @@ class DocumentServiceTest extends FreeSpec with MustMatchers with EitherValues {
   private def assertDocumentSummaries(expected: List[DocumentSummary]): Unit =
     service(Request[IO](Method.GET, Uri.unsafeFromString(s"/documents")))
       .map { response ⇒
-        val json = response.bodyAsText.compile.foldMonoid.unsafeRunSync()
+        val json = getBodyText(response)
         parse(json).right.value mustEqual expected.asJson
       }
       .value
       .unsafeRunSync()
+
+  private def getBodyText(response: Response[IO]): String =
+    response.bodyAsText.compile.foldMonoid.unsafeRunSync()
 }

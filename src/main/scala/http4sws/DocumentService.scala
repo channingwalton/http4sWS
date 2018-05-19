@@ -16,8 +16,6 @@
 
 package http4sws
 
-import java.util.UUID
-
 import cats.effect.Effect
 import cats.syntax.flatMap._
 import cats.syntax.functor._

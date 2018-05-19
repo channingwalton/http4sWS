@@ -25,7 +25,9 @@ lazy val http4sws =
         library.cirisGeneric,
         library.cirisRefined,
         library.logback,
-        library.log4s
+        library.log4s,
+        library.scalaTest,
+        library.doobieScalaTest
       )
     )
 
@@ -43,6 +45,7 @@ lazy val library =
       val ciris = "0.9.2"
       val logback = "1.2.3"
       val log4s = "1.6.1"
+      val scalaTest = "3.0.5"
     }
     val http4s                    = "org.http4s"              %% "http4s-dsl"           % Version.http4s
     val http4sServer              = "org.http4s"              %% "http4s-blaze-server"  % Version.http4s
@@ -50,6 +53,7 @@ lazy val library =
     val doobieH2                  = "org.tpolecat"            %% "doobie-h2"            % Version.doobie
     val doobieHikari              = "org.tpolecat"            %% "doobie-hikari"        % Version.doobie
     val doobieRefined             = "org.tpolecat"            %% "doobie-refined"       % Version.doobie
+    val doobieScalaTest           = "org.tpolecat"            %% "doobie-scalatest"     % Version.doobie
     val refined                   = "eu.timepit"              %% "refined"              % Version.refined
     val refinedCats               = "eu.timepit"              %% "refined-cats"         % Version.refined
     val flyway                    = "org.flywaydb"             % "flyway-core"          % Version.flyway
@@ -60,6 +64,7 @@ lazy val library =
     val cirisRefined              = "is.cir"                  %% "ciris-refined"        % Version.ciris
     val logback                   = "ch.qos.logback"           % "logback-classic"      % Version.logback
     val log4s                     = "org.log4s"               %% "log4s"                % Version.log4s
+    val scalaTest                 = "org.scalatest"           %% "scalatest"            % Version.scalaTest % Test
   }
 
 // *****************************************************************************

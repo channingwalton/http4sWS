@@ -29,7 +29,7 @@ import _root_.io.circe.syntax._
 /**
   * This service expects POSTS to be multipart form data with the image in a part named 'doc'.
   *
-  * You can test this with curl (you will need to add the cookie for your user after logging in!):
+  * You can test this with curl:
   *   curl -X POST -F 'doc=@picture.jpg' -H "Content-Type: image/jpeg" http://127.0.0.1:8080/document/1
   *   curl http://127.0.0.1:8080/document/1 > downloaded.jpg
   */

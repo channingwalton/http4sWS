@@ -8,7 +8,7 @@ an example rest api and store using doobie.
 ## REST Api
 The api offers a simple document store.
 
-You can test this with curl (assuming a document called _picture.jpg_:
+You can test this with curl (assuming a document called _picture.jpg_):
 
     curl -X POST -F 'doc=@picture.jpg' -H "Content-Type: image/jpeg" http://127.0.0.1:8080/document/1
     curl http://127.0.0.1:8080/document/1 > downloaded.jpg

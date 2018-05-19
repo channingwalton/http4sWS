@@ -31,6 +31,9 @@ class DocumentStore[F[_]](transactor: Transactor[F])(implicit F: Effect[F]) exte
   def get(id: String): OptionT[F, Document] =
     OptionT(DocumentDao.get(id).option.transact(transactor))
 
+  def list: F[List[DocumentSummary]] =
+    DocumentDao.list.to[List].transact(transactor)
+
   def put(document: Document): F[Document] =
     liftReturning(DocumentDao.create(document).run.attemptSql.transact(transactor), document)
 

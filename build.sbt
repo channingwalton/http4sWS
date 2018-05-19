@@ -26,6 +26,8 @@ lazy val http4sws =
         library.cirisRefined,
         library.logback,
         library.log4s,
+        library.circeCore,
+        library.circeGenericExtras,
         library.scalaTest,
         library.doobieScalaTest
       )
@@ -38,7 +40,8 @@ lazy val http4sws =
 lazy val library =
   new {
     object Version {
-      val http4s     = "0.18.9"
+      val http4s = "0.18.9"
+      val circe = "0.9.3"
       val doobie = "0.5.2"
       val refined = "0.9.0"
       val flyway = "5.0.7"
@@ -63,6 +66,8 @@ lazy val library =
     val cirisGeneric              = "is.cir"                  %% "ciris-generic"        % Version.ciris
     val cirisRefined              = "is.cir"                  %% "ciris-refined"        % Version.ciris
     val logback                   = "ch.qos.logback"           % "logback-classic"      % Version.logback
+    val circeCore                 = "io.circe"                %% "circe-core"           % Version.circe
+    val circeGenericExtras        = "io.circe"                %% "circe-generic-extras" % Version.circe
     val log4s                     = "org.log4s"               %% "log4s"                % Version.log4s
     val scalaTest                 = "org.scalatest"           %% "scalatest"            % Version.scalaTest % Test
   }

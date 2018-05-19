@@ -24,6 +24,7 @@ class DocumentDaoTest extends FreeSpec with IOChecker {
 
   // note parameters to the methods are not used by the tests, they just need to type-check
   "size" in check(DocumentDao.size)
+  "list" in check(DocumentDao.list)
   "get" in check(DocumentDao.get("1"))
   "create" in check(DocumentDao.create(Document("1", "A", "1234".getBytes(), None)))
   "update" in check(DocumentDao.update(Document("2", "B", "1234".getBytes(), None)))

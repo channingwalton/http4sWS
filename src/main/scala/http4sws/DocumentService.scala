@@ -24,6 +24,7 @@ import org.http4s.dsl._
 import org.http4s.headers._
 import org.http4s.multipart.Multipart
 import org.log4s.Logger
+import _root_.io.circe.syntax._
 
 /**
   * This service expects POSTS to be multipart form data with the image in a part named 'doc'.
@@ -38,12 +39,13 @@ class DocumentService[F[_]](documentStore: DocumentStore[F])(implicit F: Effect[
 
   def service: HttpService[F] = HttpService[F] {
     case GET -> Root / "document" / id =>
-      logger.info(s"Getting document $id")
       documentStore.get(id).value >>= (_.fold(NotFound())(returnDocument))
 
     case req @ POST -> Root / "document" / id =>
-      logger.info(s"Receiving document $id")
       req.decode[Multipart[F]](multi => storeDocument(multi, id))
+
+    case GET -> Root / "documents" ⇒
+      Ok(documentStore.list.map(_.asJson.spaces2), `Content-Type`(MediaType.`application/json`))
   }
 
   private def storeDocument(multi: Multipart[F], id: String): F[Response[F]] =

@@ -24,6 +24,9 @@ object DocumentDao {
   def size: query.Query0[Long] =
     sql"SELECT COUNT(*) FROM DOCUMENT".query[Long]
 
+  def list: query.Query0[DocumentSummary] =
+    sql"SELECT id, mimetype, fileName FROM DOCUMENT".query[DocumentSummary]
+
   def get(id: String): query.Query0[Document] =
     sql"SELECT id, mimetype, documentData, fileName FROM DOCUMENT WHERE id=$id".query[Document]
 

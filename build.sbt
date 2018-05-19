@@ -1,3 +1,4 @@
+
 // *****************************************************************************
 // Projects
 // *****************************************************************************
@@ -10,7 +11,21 @@ lazy val http4sws =
     .settings(
       libraryDependencies ++= Seq(
         library.http4s,
-	library.http4sServer
+	      library.http4sServer,
+        library.doobieCore,
+        library.doobieH2,
+        library.doobieHikari,
+        library.doobieRefined,
+        library.refined,
+        library.refinedCats,
+        library.flyway,
+        library.cirisCore,
+        library.cirisCats,
+        library.cirisCatsEffect,
+        library.cirisGeneric,
+        library.cirisRefined,
+        library.logback,
+        library.log4s
       )
     )
 
@@ -22,9 +37,29 @@ lazy val library =
   new {
     object Version {
       val http4s     = "0.18.9"
+      val doobie = "0.5.2"
+      val refined = "0.9.0"
+      val flyway = "5.0.7"
+      val ciris = "0.9.2"
+      val logback = "1.2.3"
+      val log4s = "1.6.1"
     }
-    val http4s       = "org.http4s"     %% "http4s-dsl"          % Version.http4s
-    val http4sServer = "org.http4s"     %% "http4s-blaze-server" % Version.http4s
+    val http4s                    = "org.http4s"              %% "http4s-dsl"           % Version.http4s
+    val http4sServer              = "org.http4s"              %% "http4s-blaze-server"  % Version.http4s
+    val doobieCore                = "org.tpolecat"            %% "doobie-core"          % Version.doobie
+    val doobieH2                  = "org.tpolecat"            %% "doobie-h2"            % Version.doobie
+    val doobieHikari              = "org.tpolecat"            %% "doobie-hikari"        % Version.doobie
+    val doobieRefined             = "org.tpolecat"            %% "doobie-refined"       % Version.doobie
+    val refined                   = "eu.timepit"              %% "refined"              % Version.refined
+    val refinedCats               = "eu.timepit"              %% "refined-cats"         % Version.refined
+    val flyway                    = "org.flywaydb"             % "flyway-core"          % Version.flyway
+    val cirisCore                 = "is.cir"                  %% "ciris-core"           % Version.ciris
+    val cirisCats                 = "is.cir"                  %% "ciris-cats"           % Version.ciris
+    val cirisCatsEffect           = "is.cir"                  %% "ciris-cats-effect"    % Version.ciris
+    val cirisGeneric              = "is.cir"                  %% "ciris-generic"        % Version.ciris
+    val cirisRefined              = "is.cir"                  %% "ciris-refined"        % Version.ciris
+    val logback                   = "ch.qos.logback"           % "logback-classic"      % Version.logback
+    val log4s                     = "org.log4s"               %% "log4s"                % Version.log4s
   }
 
 // *****************************************************************************

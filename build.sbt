@@ -28,6 +28,7 @@ lazy val http4sws =
         library.log4s,
         library.circeCore,
         library.circeGenericExtras,
+        library.circeParser,
         library.scalaTest,
         library.doobieScalaTest
       )
@@ -68,6 +69,7 @@ lazy val library =
     val logback                   = "ch.qos.logback"           % "logback-classic"      % Version.logback
     val circeCore                 = "io.circe"                %% "circe-core"           % Version.circe
     val circeGenericExtras        = "io.circe"                %% "circe-generic-extras" % Version.circe
+    val circeParser               = "io.circe"                %% "circe-parser"         % Version.circe
     val log4s                     = "org.log4s"               %% "log4s"                % Version.log4s
     val scalaTest                 = "org.scalatest"           %% "scalatest"            % Version.scalaTest % Test
   }

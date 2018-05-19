@@ -5,6 +5,9 @@ Welcome to http4sws!
 This is as a simple example of working with Websockets and http4s, and also
 an example rest api and store using doobie.
 
+## Starting the Service
+    Run bin/start.sh
+
 ## REST Api
 The api offers a simple document store.
 

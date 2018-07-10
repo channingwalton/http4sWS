@@ -50,7 +50,7 @@ class DocumentService[F[_]](documentStore: DocumentStore[F])(implicit F: Effect[
       )
   }
 
-  private def handleError[T](value: F[Response[F]]): F[Response[F]] =
+  private def handleError(value: F[Response[F]]): F[Response[F]] =
     F.handleErrorWith(value) { t ⇒
       logger.error(t)("Disaster!!!")
       InternalServerError()

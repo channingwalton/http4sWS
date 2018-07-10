@@ -39,14 +39,22 @@ class DocumentService[F[_]](documentStore: DocumentStore[F])(implicit F: Effect[
 
   def service: HttpService[F] = HttpService[F] {
     case GET -> Root / "document" / id =>
-      documentStore.get(id).value >>= (_.fold(NotFound())(returnDocument))
+      handleError(documentStore.get(id).value >>= (_.fold(NotFound())(returnDocument)))
 
     case req @ POST -> Root / "document" / id =>
-      req.decode[Multipart[F]](multi => storeDocument(multi, id))
+      handleError(req.decode[Multipart[F]](multi => storeDocument(multi, id)))
 
     case GET -> Root / "documents" ⇒
-      Ok(documentStore.list.map(_.asJson.spaces2), `Content-Type`(MediaType.`application/json`))
+      handleError(
+        Ok(documentStore.list.map(_.asJson.spaces2), `Content-Type`(MediaType.`application/json`))
+      )
   }
+
+  private def handleError[T](value: F[Response[F]]): F[Response[F]] =
+    F.handleErrorWith(value) { t ⇒
+      logger.error(t)("Disaster!!!")
+      InternalServerError()
+    }
 
   private def storeDocument(multi: Multipart[F], id: String): F[Response[F]] =
     multi.parts.find(_.name.contains("doc")) match {

@@ -21,8 +21,8 @@ import cats.instances.string.catsKernelStdMonoidForString
 import cats.effect.IO
 import cats.instances.list._
 import cats.syntax.traverse._
-import org.http4s.{Method, Request, Response, Uri}
-import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
+import org.http4s.{ Method, Request, Response, Uri }
+import org.scalatest.{ EitherValues, FreeSpec, MustMatchers }
 import io.circe.syntax._
 import io.circe.parser._
 import org.http4s.headers.`Content-Type`

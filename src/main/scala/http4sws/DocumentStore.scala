@@ -22,6 +22,18 @@ import doobie.implicits._
 import doobie.util.transactor.Transactor
 import org.log4s.Logger
 
+/**
+  * A document store.
+  *
+  * Be careful with transactionality here. A transaction is committed after .transact is called.
+  * So if you want to perform a number of operations in a single transaction, you will need to
+  * work with ConnectionIO and transact at the end.
+  *
+  * Note also, that if you call attemptSql, the transaction will commit even if the contained
+  * Either is a left. You are expected to rollback yourself. If you don't want to manage that
+  * yourself then don't call attemptSql, the resulting SQLException will be thrown after a]
+  * rollback.
+  */
 class DocumentStore[F[_]](transactor: Transactor[F])(implicit F: Effect[F]) extends StoreUtils {
   @transient protected[this] val logger: Logger = org.log4s.getLogger
 

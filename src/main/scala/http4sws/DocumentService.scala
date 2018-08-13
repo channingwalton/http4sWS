@@ -19,12 +19,14 @@ package http4sws
 import cats.effect.Effect
 import cats.syntax.flatMap._
 import cats.syntax.functor._
+import doobie.implicits._
 import org.http4s._
 import org.http4s.dsl._
 import org.http4s.headers._
 import org.http4s.multipart.Multipart
 import org.log4s.Logger
 import _root_.io.circe.syntax._
+import doobie.util.transactor.Transactor
 
 /**
   * This service expects POSTS to be multipart form data with the image in a part named 'doc'.
@@ -33,20 +35,24 @@ import _root_.io.circe.syntax._
   *   curl -X POST -F 'doc=@picture.jpg' -H "Content-Type: image/jpeg" http://127.0.0.1:8080/document/1
   *   curl http://127.0.0.1:8080/document/1 > downloaded.jpg
   */
-class DocumentService[F[_]](documentStore: DocumentStore[F])(implicit F: Effect[F])
-    extends Http4sDsl[F] {
+class DocumentService[F[_]](transactor: Transactor[F])(
+    implicit F: Effect[F]
+) extends Http4sDsl[F] {
   @transient protected[this] val logger: Logger = org.log4s.getLogger
 
   def service: HttpService[F] = HttpService[F] {
     case GET -> Root / "document" / id =>
-      handleError(documentStore.get(id).value >>= (_.fold(NotFound())(returnDocument)))
+      handleError(
+        DocumentStore.get(id).value.transact(transactor) >>= (_.fold(NotFound())(returnDocument))
+      )
 
     case req @ POST -> Root / "document" / id =>
       handleError(req.decode[Multipart[F]](multi => storeDocument(multi, id)))
 
     case GET -> Root / "documents" ⇒
       handleError(
-        Ok(documentStore.list.map(_.asJson.spaces2), `Content-Type`(MediaType.`application/json`))
+        Ok(DocumentStore.list.transact(transactor).map(_.asJson.spaces2),
+           `Content-Type`(MediaType.`application/json`))
       )
   }
 
@@ -72,7 +78,7 @@ class DocumentService[F[_]](documentStore: DocumentStore[F])(implicit F: Effect[
                     array: Array[Byte],
                     ct: `Content-Type`,
                     fileName: Option[String]): F[Response[F]] =
-    documentStore.put(Document(id, ct.toRaw.value, array, fileName)) >> Ok(id)
+    DocumentStore.put(Document(id, ct.toRaw.value, array, fileName)).transact(transactor) >> Ok(id)
 
   private def returnDocument(document: Document): F[Response[F]] =
     `Content-Type`

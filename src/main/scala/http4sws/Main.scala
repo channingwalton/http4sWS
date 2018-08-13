@@ -30,8 +30,7 @@ object Main extends StreamApp[IO] {
   private val batchJobs: BatchJobs = new BatchJobs()
   private val transactor: Transactor[IO] =
     HikariTransactorBuilder(DatabaseConfiguration.load, FlywayDBMigration)
-  private val documentStore: DocumentStore[IO]  = new DocumentStore[IO](transactor)
-  private val documentService                   = new DocumentService[IO](documentStore).service
+  private val documentService                   = new DocumentService(transactor).service
   private val webSocketService: HttpService[IO] = new Http4sWS(batchJobs).service
 
   def server: Stream[IO, StreamApp.ExitCode] =

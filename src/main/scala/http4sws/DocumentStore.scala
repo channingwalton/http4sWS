@@ -17,9 +17,7 @@
 package http4sws
 
 import cats.data._
-import cats.effect._
-import doobie.implicits._
-import doobie.util.transactor.Transactor
+import doobie._
 import org.log4s.Logger
 
 /**
@@ -34,28 +32,28 @@ import org.log4s.Logger
   * yourself then don't call attemptSql, the resulting SQLException will be thrown after a]
   * rollback.
   */
-class DocumentStore[F[_]](transactor: Transactor[F])(implicit F: Effect[F]) extends StoreUtils {
+object DocumentStore {
   @transient protected[this] val logger: Logger = org.log4s.getLogger
 
-  def size: F[Long] =
-    liftId(DocumentDao.size.unique.attemptSql.transact(transactor))
+  def size: ConnectionIO[Long] =
+    DocumentDao.size.unique
 
-  def get(id: String): OptionT[F, Document] =
-    OptionT(DocumentDao.get(id).option.transact(transactor))
+  def get(id: String): OptionT[ConnectionIO, Document] =
+    OptionT(DocumentDao.get(id).option)
 
-  def list: F[List[DocumentSummary]] =
-    DocumentDao.list.to[List].transact(transactor)
+  def list: ConnectionIO[List[DocumentSummary]] =
+    DocumentDao.list.to[List]
 
-  def put(document: Document): F[Document] =
-    liftReturning(DocumentDao.create(document).run.attemptSql.transact(transactor), document)
+  def put(document: Document): ConnectionIO[Document] =
+    DocumentDao.create(document).run.map(_ ⇒ document)
 
-  def update(document: Document): F[Document] =
-    liftReturning(DocumentDao.update(document).run.attemptSql.transact(transactor), document)
+  def update(document: Document): ConnectionIO[Document] =
+    DocumentDao.update(document).run.map(_ ⇒ document)
 
-  def delete(id: String): F[Unit] =
-    liftToUnit(DocumentDao.delete(id).run.attemptSql.transact(transactor))
+  def delete(id: String): ConnectionIO[Unit] =
+    DocumentDao.delete(id).run.map(_ ⇒ ())
 
-  def clear(): F[Unit] =
-    liftToUnit(DocumentDao.clear().run.attemptSql.transact(transactor))
+  def clear(): ConnectionIO[Unit] =
+    DocumentDao.clear().run.map(_ ⇒ ())
 
 }

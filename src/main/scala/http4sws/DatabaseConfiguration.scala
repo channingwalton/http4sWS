@@ -40,7 +40,7 @@ object DatabaseConfiguration {
     ) { (dbDriver, dbUrl, dbSchema, dbUser, dbPwd) =>
       DatabaseConfiguration(
         driver = dbDriver getOrElse "org.h2.Driver",
-        url = dbUrl getOrElse "jdbc:h2:mem:http4sws;DB_CLOSE_DELAY=-1;LOCK_MODE=3;MODE=Oracle;DB_CLOSE_ON_EXIT=FALSE;MVCC=TRUE",
+        url = dbUrl getOrElse "jdbc:h2:mem:http4sws;DB_CLOSE_DELAY=-1;LOCK_MODE=3;MODE=Oracle;DB_CLOSE_ON_EXIT=FALSE;MVCC=TRUE;TRACE_LEVEL_SYSTEM_OUT=2", // TRACE_LEVEL_SYSTEM_OUT=2
         user = dbUser getOrElse "sa",
         password = dbPwd getOrElse "",
         schema = dbSchema,

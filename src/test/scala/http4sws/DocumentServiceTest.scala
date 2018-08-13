@@ -21,6 +21,7 @@ import cats.instances.string.catsKernelStdMonoidForString
 import cats.effect.IO
 import cats.instances.list._
 import cats.syntax.traverse._
+import doobie.implicits._
 import org.http4s.{ Method, Request, Response, Uri }
 import org.scalatest.{ EitherValues, FreeSpec, MustMatchers }
 import io.circe.syntax._
@@ -28,9 +29,9 @@ import io.circe.parser._
 import org.http4s.headers.`Content-Type`
 
 class DocumentServiceTest extends FreeSpec with MustMatchers with EitherValues {
-  private val store =
-    new DocumentStore[IO](HikariTransactorBuilder(DatabaseConfiguration.load, FlywayDBMigration))
-  private val service = new DocumentService(store).service
+  private val transactor =
+    HikariTransactorBuilder[IO](DatabaseConfiguration.load, FlywayDBMigration)
+  private val service = new DocumentService(transactor).service
 
   "CRUD" in {
     assertDocumentSummaries(Nil)
@@ -39,7 +40,7 @@ class DocumentServiceTest extends FreeSpec with MustMatchers with EitherValues {
                          Document("321", "c/d", "another doc".getBytes, Some("important.doc")))
     val summaries = documents.map(_.summary)
 
-    documents.map(store.put).sequence.unsafeRunSync()
+    documents.map(DocumentStore.put).sequence.transact(transactor).unsafeRunSync()
 
     assertDocumentSummaries(summaries)
 

@@ -16,10 +16,7 @@
 
 package http4sws
 
-case class Document(id: String,
-                    mimeType: String,
-                    documentData: Array[Byte],
-                    fileName: Option[String]) {
+case class Document(id: String, mimeType: String, documentData: Array[Byte], fileName: Option[String]) {
 
   override def equals(other: Any): Boolean = other match {
     case that: Document => id.equals(that.id)

@@ -49,6 +49,5 @@ object DatabaseConfiguration {
     }.fold(throwConfigErrors, identity)
 
   def throwConfigErrors(err: ConfigErrors): Nothing =
-    throw new RuntimeException(s"Errors loading configuration: \n ${err.messages.mkString("\n")}",
-                               err.toException)
+    throw new RuntimeException(s"Errors loading configuration: \n ${err.messages.mkString("\n")}", err.toException)
 }

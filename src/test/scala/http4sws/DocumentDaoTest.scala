@@ -32,5 +32,5 @@ class DocumentDaoTest extends FreeSpec with IOChecker {
   "clear" in check(DocumentDao.clear())
 
   override def transactor: doobie.Transactor[IO] =
-    HikariTransactorBuilder(DatabaseConfiguration.load, FlywayDBMigration)
+    HikariTransactorBuilder(testConfig, FlywayDBMigration)
 }

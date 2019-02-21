@@ -51,8 +51,7 @@ class DocumentService[F[_]](transactor: Transactor[F])(
 
     case GET -> Root / "documents" ⇒
       handleError(
-        Ok(DocumentStore.list.transact(transactor).map(_.asJson.spaces2),
-           `Content-Type`(MediaType.`application/json`))
+        Ok(DocumentStore.list.transact(transactor).map(_.asJson.spaces2), `Content-Type`(MediaType.`application/json`))
       )
   }
 
@@ -74,10 +73,7 @@ class DocumentService[F[_]](transactor: Transactor[F])(
         }
     }
 
-  private def store(id: String,
-                    array: Array[Byte],
-                    ct: `Content-Type`,
-                    fileName: Option[String]): F[Response[F]] =
+  private def store(id: String, array: Array[Byte], ct: `Content-Type`, fileName: Option[String]): F[Response[F]] =
     DocumentStore.put(Document(id, ct.toRaw.value, array, fileName)).transact(transactor) >> Ok(id)
 
   private def returnDocument(document: Document): F[Response[F]] =
@@ -89,8 +85,7 @@ class DocumentService[F[_]](transactor: Transactor[F])(
           Ok(document.documentData, ct)
             .map(
               _.putHeaders(
-                Header("Content-Disposition",
-                       s"filename='${document.fileName.getOrElse(document.id)}'")
+                Header("Content-Disposition", s"filename='${document.fileName.getOrElse(document.id)}'")
               )
           )
       )

@@ -24,7 +24,7 @@ import org.scalatest.{ FreeSpec, MustMatchers }
 class DocumentStoreTest extends FreeSpec with MustMatchers {
 
   private val transactor =
-    HikariTransactorBuilder[IO](DatabaseConfiguration.load, FlywayDBMigration)
+    HikariTransactorBuilder[IO](testConfig, FlywayDBMigration)
   "CRUD" in {
     val document = Document("123", "a/b", "doc".getBytes, Some("myFile.doc"))
     DocumentStore.put(document).transact(transactor).unsafeRunSync() mustBe document

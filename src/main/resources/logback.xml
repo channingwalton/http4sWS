@@ -15,7 +15,7 @@
 
     <!-- log appender to rolling file. This is only useful for dev as in PaaS only console logs are tracked and stored -->
     <appender name="APP" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>log/questions.log</file>
+        <file>log/http4s.log</file>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->

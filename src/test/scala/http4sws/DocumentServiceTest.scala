@@ -29,15 +29,13 @@ import io.circe.parser._
 import org.http4s.headers.`Content-Type`
 
 class DocumentServiceTest extends FreeSpec with MustMatchers with EitherValues {
-  private val transactor =
-    HikariTransactorBuilder[IO](DatabaseConfiguration.load, FlywayDBMigration)
-  private val service = new DocumentService(transactor).service
+  private val transactor = HikariTransactorBuilder[IO](testConfig, FlywayDBMigration)
+  private val service    = new DocumentService(transactor).service
 
   "CRUD" in {
     assertDocumentSummaries(Nil)
 
-    val documents = List(Document("123", "a/b", "doc".getBytes, Some("myFile.doc")),
-                         Document("321", "c/d", "another doc".getBytes, Some("important.doc")))
+    val documents = List(Document("123", "a/b", "doc".getBytes, Some("myFile.doc")), Document("321", "c/d", "another doc".getBytes, Some("important.doc")))
     val summaries = documents.map(_.summary)
 
     documents.map(DocumentStore.put).sequence.transact(transactor).unsafeRunSync()
@@ -56,11 +54,13 @@ class DocumentServiceTest extends FreeSpec with MustMatchers with EitherValues {
   }
 
   private def assertContentType(response: Response[IO], mimeType: String): Unit =
-    response.headers.get(`Content-Type`).map(_.mediaType.renderString) mustBe Some(
-      mimeType
+    discard(
+      response.headers.get(`Content-Type`).map(_.mediaType.renderString) mustBe Some(
+        mimeType
+      )
     )
 
-  private def assertDocumentSummaries(expected: List[DocumentSummary]): Unit =
+  private def assertDocumentSummaries(expected: List[DocumentSummary]): Unit = discard {
     mkGet("/documents")
       .map { response ⇒
         val json = getBodyText(response)
@@ -68,6 +68,7 @@ class DocumentServiceTest extends FreeSpec with MustMatchers with EitherValues {
       }
       .value
       .unsafeRunSync()
+  }
 
   private def mkGet(path: String): OptionT[IO, Response[IO]] =
     service(Request[IO](Method.GET, Uri.unsafeFromString(path)))

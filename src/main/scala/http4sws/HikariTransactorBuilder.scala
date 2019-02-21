@@ -26,8 +26,7 @@ object HikariTransactorBuilder {
 
   @transient protected[this] val logger: Logger = org.log4s.getLogger
 
-  def apply[F[_]: Monad](configuration: DatabaseConfiguration,
-                         dbMigration: DBMigration)(implicit F: Effect[F]): HikariTransactor[F] = {
+  def apply[F[_]: Monad](configuration: DatabaseConfiguration, dbMigration: DBMigration)(implicit F: Effect[F]): HikariTransactor[F] = {
     val ds = createDataSource(configuration)
 
     val transactor = HikariTransactor[F](ds)

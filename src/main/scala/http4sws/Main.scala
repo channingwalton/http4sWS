@@ -49,7 +49,6 @@ object Main extends StreamApp[IO] {
         .Config[IO](basePath = "/public", pathPrefix = "/", cacheStrategy = MemoryCache())
     )
 
-  override def stream(args: List[String],
-                      requestShutdown: IO[Unit]): Stream[IO, StreamApp.ExitCode] =
+  override def stream(args: List[String], requestShutdown: IO[Unit]): Stream[IO, StreamApp.ExitCode] =
     server
 }

@@ -49,7 +49,7 @@ lazy val library =
       val flyway = "5.0.7"
       val ciris = "0.9.2"
       val logback = "1.2.3"
-      val log4s = "1.6.1"
+      val log4s = "1.7.0"
       val scalaTest = "3.0.5"
       val jaxbapi = "2.2.11"
     }

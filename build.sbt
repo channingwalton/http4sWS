@@ -51,7 +51,7 @@ lazy val library =
       val logback = "1.2.3"
       val log4s = "1.6.1"
       val scalaTest = "3.0.5"
-      val jaxbapi = "2.2.11"
+      val jaxbapi = "2.2.12"
     }
     val http4s                    = "org.http4s"              %% "http4s-dsl"           % Version.http4s
     val http4sServer              = "org.http4s"              %% "http4s-blaze-server"  % Version.http4s

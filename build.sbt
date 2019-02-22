@@ -44,7 +44,7 @@ lazy val library =
     object Version {
       val http4s = "0.18.9"
       val circe = "0.9.3"
-      val doobie = "0.5.2"
+      val doobie = "0.5.4"
       val refined = "0.9.0"
       val flyway = "5.0.7"
       val ciris = "0.9.2"

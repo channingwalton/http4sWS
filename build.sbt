@@ -42,7 +42,7 @@ lazy val http4sws =
 lazy val library =
   new {
     object Version {
-      val http4s = "0.18.9"
+      val http4s = "0.18.24"
       val circe = "0.9.3"
       val doobie = "0.5.2"
       val refined = "0.9.0"

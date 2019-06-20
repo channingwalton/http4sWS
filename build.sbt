@@ -50,7 +50,7 @@ lazy val library =
       val ciris = "0.9.2"
       val logback = "1.2.3"
       val log4s = "1.6.1"
-      val scalaTest = "3.0.5"
+      val scalaTest = "3.0.8"
       val jaxbapi = "2.2.11"
     }
     val http4s                    = "org.http4s"              %% "http4s-dsl"           % Version.http4s

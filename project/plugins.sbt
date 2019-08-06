@@ -8,4 +8,4 @@ addSbtPlugin("com.typesafe.sbt"  % "sbt-git"         % "1.0.0")
 addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.1.0-M9")
 addSbtPlugin("de.heikoseeberger" % "sbt-header"      % "5.0.0")
 
-libraryDependencies += "org.slf4j" % "slf4j-nop" % "1.7.25" // Needed by sbt-git
+libraryDependencies += "org.slf4j" % "slf4j-nop" % "1.7.27" // Needed by sbt-git

@@ -144,7 +144,7 @@ lazy val commonSettings =
       "-Ybackend-parallelism","8", // Scala 2.12.5 compiler flag to run some compilation tasks in parallel
       "-Ywarn-value-discard" // Warn when non-Unit expression results are unused.
     ),
-    scalacOptions in (Test) --= Seq("-Ywarn-unused:params"),
+    ((Test) / scalacOptions) --= Seq("-Ywarn-unused:params"),
     Compile / unmanagedSourceDirectories := Seq((Compile / scalaSource).value),
     Test / unmanagedSourceDirectories := Seq((Test / scalaSource).value)
 )

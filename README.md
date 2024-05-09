@@ -35,12 +35,3 @@ legal authority to do so.
 This code is open source software licensed under the
 [Apache-2.0](http://www.apache.org/licenses/LICENSE-2.0) license.
 
-## expt
-
-```mermaid
-sequenceDiagram
-    Alice->>+John: Hello John, how are you?
-    Alice->>+John: John, can you hear me?
-    John-->>-Alice: Hi Alice, I can hear you!
-    John-->>-Alice: I feel great!
-```            
